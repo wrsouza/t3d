@@ -2,6 +2,8 @@ import * as THREE from "three";
 import Wall from "./wall";
 import Door from "./door";
 import Roof from "./roof";
+import Window from "./window";
+import MoveWindow from './move-window'
 
 class House {
   constructor(scene) {
@@ -215,6 +217,66 @@ class House {
       position: new THREE.Vector3(0, 1.6, 0),
       rotation: new THREE.Vector3(0, Math.PI * 0.25, 0),
     });
+
+    this.winLeftOne = new MoveWindow({
+      container: this.leftWall,
+      width: this.wallWidth * 0.2,
+      height: this.wallHeight * 0.5,
+      depth: 0.01,
+      color: 0x00dddd,
+      position: new THREE.Vector3(-(this.wallWidth * 0.2), (this.wallHeight - (this.wallHeight * 0.5))/2, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    })
+
+    this.winLeftTwo = new MoveWindow({
+      container: this.leftWall,
+      width: this.wallWidth * 0.2,
+      height: this.wallHeight * 0.5,
+      depth: 0.01,
+      color: 0x00dddd,
+      position: new THREE.Vector3((this.wallWidth * 0.2), (this.wallHeight - (this.wallHeight * 0.5))/2, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    })
+
+    this.winRightOne = new MoveWindow({
+      container: this.rightWall,
+      width: this.wallWidth * 0.2,
+      height: this.wallHeight * 0.5,
+      depth: 0.01,
+      color: 0x00dddd,
+      position: new THREE.Vector3(-(this.wallWidth * 0.2), (this.wallHeight - (this.wallHeight * 0.5))/2, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    })
+
+    this.winRightTwo = new MoveWindow({
+      container: this.rightWall,
+      width: this.wallWidth * 0.2,
+      height: this.wallHeight * 0.5,
+      depth: 0.01,
+      color: 0x00dddd,
+      position: new THREE.Vector3((this.wallWidth * 0.2), (this.wallHeight - (this.wallHeight * 0.5))/2, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    })
+
+    this.winBottonOne = new Window({
+      container: this.bottomWall,
+      width: this.wallWidth * 0.3,
+      height: this.wallHeight * 0.6,
+      depth: 0.01,
+      color: 0x00dddd,
+      position: new THREE.Vector3(-((this.wallWidth * 0.3) - (this.wallWidth * 0.1)), (this.wallHeight - (this.wallHeight * 0.6))/2, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    })
+
+    this.winBottomTwo = new Window({
+      container: this.bottomWall,
+      width: this.wallWidth * 0.3,
+      height: this.wallHeight * 0.6,
+      depth: 0.01,
+      color: 0x00dddd,
+      position: new THREE.Vector3((this.wallWidth * 0.3) - (this.wallWidth * 0.1), (this.wallHeight - (this.wallHeight * 0.6))/2, 0),
+      rotation: new THREE.Vector3(0, 0, 0),
+    })
   }
 
   build() {
@@ -224,6 +286,12 @@ class House {
     this.bottomWall.build();
     this.frontDoor.build();
     this.roof.build();
+    this.winLeftOne.build();
+    this.winLeftTwo.build();
+    this.winRightOne.build();
+    this.winRightTwo.build();
+    this.winBottonOne.build();
+    this.winBottomTwo.build();
   }
 
   animate() {
