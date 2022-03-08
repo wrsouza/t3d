@@ -1,4 +1,5 @@
-import { Group, BoxBufferGeometry, MeshStandardMaterial } from "three";
+import gsap from 'gsap'
+import { Group, Mesh, BoxBufferGeometry, MeshStandardMaterial } from "three";
 
 class MoveWindow {
   constructor({ container, width, height, depth, color, position, rotation }) {
@@ -10,7 +11,7 @@ class MoveWindow {
     this.position = position;
     this.rotation = rotation;
     this.window = new Group();
-    this.animateWindow = -0.01;
+    this.isAnimate = false;
   }
 
   build() {
@@ -23,26 +24,42 @@ class MoveWindow {
 
   makeLeft() {
     const width = this.width / 2
-    const mesh = new THREE.Mesh(
+    this.meshLeft = new Mesh(
       new BoxBufferGeometry(width, this.height, this.depth),
       new MeshStandardMaterial({ color: this.color, transparent: true, opacity: 0.5 })
     )
-    mesh.position.x = - (width/2)
-    mesh.position.z = -(this.depth/2)
-    mesh.position.y = this.height / 2;
-    this.window.add(mesh)
+    this.meshLeft.position.x = - (width/2)
+    this.meshLeft.position.z = -(this.depth/2)
+    this.meshLeft.position.y = this.height / 2;
+    this.window.add(this.meshLeft)
   }
 
   makeRight() {
     const width = this.width / 2
-    const mesh = new THREE.Mesh(
+    this.meshRight = new THREE.Mesh(
       new BoxBufferGeometry(width, this.height, this.depth),
       new MeshStandardMaterial({ color: this.color, transparent: true, opacity: 0.5 })
     )
-    mesh.position.x = (width/2)
-    mesh.position.z = this.depth/2;
-    mesh.position.y = this.height / 2;
-    this.window.add(mesh)
+    this.meshRight.position.x = (width/2)
+    this.meshRight.position.z = this.depth/2;
+    this.meshRight.position.y = this.height / 2;
+    this.window.add(this.meshRight)
+  }
+
+  animate() {
+    if (!this.isAnimate) {
+      this.isAnimate = true
+      const width = this.width / 2
+      gsap.to(this.meshLeft.position, { x: width/2, duration: 1, ease: "none", onComplete: () => {
+        gsap.to(this.meshLeft.position, { x: -width/2, duration: 1, delay: 1, ease: "none", onComplete: () => {
+          gsap.to(this.meshRight.position, { x: -width/2, duration: 1, delay: 1, ease: "none", onComplete: () => {
+            gsap.to(this.meshRight.position, { x: width/2, duration: 1, delay: 1, ease: "none", onComplete: () => {
+              this.isAnimate = false
+            }})
+          }})
+        }})
+      }})
+    }
   }
 }
 
